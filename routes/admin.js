@@ -5,24 +5,22 @@ const sharp = require('sharp');
 const fetch = require('node-fetch');
 const path = require('path');
 const fs = require('fs');
-// DEBUG - hapus nanti
+// DEBUG ROUTE - hapus setelah selesai
 router.get('/debug-session', (req, res) => {
   res.json({
     hasSession: !!req.session,
     sessionID: req.sessionID,
     user: req.session?.user || null,
-    cookies: req.headers.cookie,
-    env_check: {
-      DB_HOST: process.env.DB_HOST ? '✅ SET' : '❌ MISSING',
-      DB_USER: process.env.DB_USER ? '✅ SET' : '❌ MISSING',
-      DB_NAME: process.env.DB_NAME ? '✅ SET' : '❌ MISSING',
-      DB_PASSWORD: process.env.DB_PASSWORD ? '✅ SET' : '❌ MISSING',
-      SESSION_SECRET: process.env.SESSION_SECRET ? '✅ SET' : '❌ MISSING',
-      NODE_ENV: process.env.NODE_ENV || 'undefined'
+    cookies_received: req.headers.cookie || 'NO COOKIES',
+    env: {
+      DB_HOST: process.env.DB_HOST || 'MISSING',
+      DB_NAME: process.env.DB_NAME || 'MISSING',
+      SESSION_SECRET: process.env.SESSION_SECRET ? 'SET (length: ' + process.env.SESSION_SECRET.length + ')' : 'MISSING',
+      NODE_ENV: process.env.NODE_ENV || 'MISSING'
     }
   });
 });
-// Sampe Sini
+// sampesini
 const { requireAuth } = require('../middleware/auth');
 const helpers = require('../utils/helpers');
 const markdown = require('../utils/markdown');
