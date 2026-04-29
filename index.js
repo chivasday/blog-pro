@@ -30,16 +30,20 @@ app.use(cookieParser());
 
 app.use(session({
   key: 'blog_session',
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'fallback-secret-jangan-dipakai-produksi',
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
   cookie: { 
     maxAge: 1000 * 60 * 60 * 24 * 7, // 1 minggu
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production'
+    secure: false,  // ← GANTI JADI false dulu, nanti true kalau udah stabil
+    sameSite: 'lax'
   }
 }));
+
+// Trust proxy (PENTING untuk Hostinger)
+app.set('trust proxy', 1);
 
 // Inject user to all views
 const { injectUser } = require('./middleware/auth');
